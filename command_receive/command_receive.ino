@@ -5,6 +5,12 @@
 LiquidCrystal_I2C lcd(0x27,16,2); //0x27 or 0x3F
 
 char comm;
+int UNOpin1 = 5;
+int UNOpin2 = 6;
+int UNOpin3 = 7;
+int UNOpin4 = 8;
+
+
 int mpuState = 0;
 int state = 0;
 char currentCommand;
@@ -27,9 +33,28 @@ void setup() {
   lcd.begin();
   lcd.backlight();
 
-  lcd.setCursor(0,0);
-  lcd.print("State:");
-  lcd.setCursor(0,1);  
+//  lcd.setCursor(0,0);
+//  lcd.print("State:");
+//  lcd.setCursor(0,1);  
+  initialDisplay();
+
+
+  pinMode(UNOpin1, OUTPUT);
+  pinMode(UNOpin2, OUTPUT);
+  pinMode(UNOpin3, OUTPUT);
+  pinMode(UNOpin4, OUTPUT);
+//
+//  pinMode(enA, OUTPUT);
+//  pinMode(enB, OUTPUT);
+
+  // analogWrite(enA, spd);
+  // analogWrite(enB, spd);
+
+  digitalWrite(UNOpin1, HIGH);
+  digitalWrite(UNOpin2, HIGH);
+  digitalWrite(UNOpin3, HIGH);
+  digitalWrite(UNOpin4, HIGH);
+
 }
 
 void decision(int state){
@@ -38,6 +63,22 @@ void decision(int state){
     lcd.print("Fan");
   }else if(state == 1){
     lcd.print("Light");
+  }
+}
+
+void checker(int state, int voltage){
+  if(state == 0){
+    if(voltage == 0){
+      digitalWrite(UNOpin1, HIGH);
+    }else{
+      digitalWrite(UNOpin1, LOW);
+    }
+  }else{
+     if(voltage == 0){
+      digitalWrite(UNOpin2, HIGH);
+    }else{
+      digitalWrite(UNOpin2, LOW);
+    }
   }
 }
 
@@ -58,6 +99,7 @@ void loop() {
       component[state] ^= 1;  
       currentCommand = 'A';
       decision(state);
+      checker(state,component[state]);
       }
       Serial.println(comm);
     }else if(comm == 'B'){
