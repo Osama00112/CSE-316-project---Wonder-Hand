@@ -8,11 +8,17 @@ char comm;
 int mpuState = 0;
 int state = 0;
 char currentCommand;
+int component[2] = {0,0};
 
 void initialDisplay(){
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("State:");
+    lcd.print(state);
+    if(component[state] == 0)
+      lcd.print(" OFF");
+    else
+      lcd.print(" ON");
     lcd.setCursor(0,1);
 }
 
@@ -48,6 +54,11 @@ void loop() {
       currentCommand = 'p';
       Serial.println(comm);
     }else if(comm == 'A'){
+      if(currentCommand == 'p'){
+      component[state] ^= 1;  
+      currentCommand = 'A';
+      decision(state);
+      }
       Serial.println(comm);
     }else if(comm == 'B'){
       Serial.println(comm);
@@ -59,24 +70,18 @@ void loop() {
       if(state > 1)
         state = 0;
       Serial.println(comm);
-      //lcd.clear();
-//      initialDisplay();
-//      lcd.print("Fan");
       decision(state);
       currentCommand = 'L';
       }
-    }else if(comm == 'T'){
+    }else if(comm == 'R'){
       Serial.println(comm);
       if(currentCommand == 'p'){
         state++;
       if(state > 1)
         state = 0;
       Serial.println(comm);
-      //lcd.clear();
-//      initialDisplay();
-//      lcd.print("Fan");
       decision(state);
-      currentCommand = 'T';
+      currentCommand = 'R';
       }
 //      initialDisplay();
 //      lcd.print("Light");

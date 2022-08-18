@@ -10,14 +10,14 @@ void setup() {
   Wire.begin();
   
   byte status = mpu.begin();
-  Serial.print(F("MPU6050 status: "));
+  //Serial.print(F("MPU6050 status: "));
   Serial.println(status);
   while(status!=0){ 
     Serial.println("NOT FOUND");
     status = mpu.begin();
     } // stop everything if could not connect to MPU6050
   
-  Serial.println(F("Calculating offsets, do not move MPU6050"));
+  //Serial.println(F("Calculating offsets, do not move MPU6050"));
   delay(1000);
   mpu.upsideDownMounting = true; // uncomment this line if the MPU6050 is mounted upside-down
   mpu.calcOffsets(true,true); // gyro and accelero
@@ -25,29 +25,18 @@ void setup() {
 }
 
 void loop() {
-//  Serial.println('S');
-//  delay(5000);
-//  Serial.println('A');
-//  delay(5000);
-//  Serial.println('M');
-//  delay(5000);
-//  Serial.println('E');
-//  delay(5000);
-//  Serial.println('E');
-//  delay(5000);
   mpu.update();
-
-  
+    
   x=mpu.getAccX();
   delay(10);  
   y=mpu.getAccY();
   delay(10);
   z=mpu.getAccZ();
   delay(10);
-  
-  Serial.print(F("ACCELERO  X: "));Serial.print(x);
-  Serial.print("\tY: ");Serial.print(y);
-  Serial.print("\tZ: ");Serial.println(z);
+//  
+//  Serial.print(F("ACCELERO  X: "));Serial.print(x);
+//  Serial.print("\tY: ");Serial.print(y);
+//  Serial.print("\tZ: ");Serial.println(z);
 
   if(x<-0.45 & abs(y)<0.1 & z<0.2){
     //Serial.println('C');
@@ -88,12 +77,12 @@ void loop() {
     //delay(1000);
     }
   
-  else if(abs(x)<0.25 & abs(y)<0.15 & abs(z-1)<0.1){
+  else if(abs(x)<0.25 & abs(y)<0.25 & abs(z-1)<0.25){
     Serial.println('p');
     //delay(1000);
     }
     else{
-      Serial.println('z');
+      Serial.println('p');
     }
  
   delay(200);
