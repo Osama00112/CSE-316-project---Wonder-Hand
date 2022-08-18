@@ -45,9 +45,9 @@ void loop() {
   z=mpu.getAccZ();
   delay(10);
   
-  //Serial.print(F("ACCELERO  X: "));Serial.print(x);
-  //Serial.print("\tY: ");Serial.print(y);
-  //Serial.print("\tZ: ");Serial.println(z);
+  Serial.print(F("ACCELERO  X: "));Serial.print(x);
+  Serial.print("\tY: ");Serial.print(y);
+  Serial.print("\tZ: ");Serial.println(z);
 
   if(x<-0.45 & abs(y)<0.1 & z<0.2){
     //Serial.println('C');
@@ -58,11 +58,11 @@ void loop() {
     //Serial.println('B');
     //delay(1000);
     }
-  else if(x<-0.06 & abs(y)<0.2 & z<0.75){
+  else if(x<-0.5 & abs(y)<0.25 & z<0.8){
     Serial.println('A');
     //delay(1000);
     }  
-    else if(x>0.6 & abs(y)<0.2 & z<0.75){
+    else if(x>0.5 & abs(y)<0.25 & z<0.8){
     Serial.println('T');
     //delay(1000);
     }  
@@ -77,18 +77,18 @@ void loop() {
     //delay(1000);
     }
   
-  else if(x<-0.05 & y>0.3 & z<1.2){
+  else if(abs(x)<0.25 & y>0.6 & z<0.8){
     Serial.println('R');
     //delay(1000);
     }
 
   
-  else if(x<-0.05 & y<-0.3 & z<1.2){
+  else if(abs(x)<0.25 & y<-0.6 & z<0.8){
     Serial.println('L');
     //delay(1000);
     }
   
-  else if(abs(x)<0.1 & abs(y)<0.1 & abs(z-1)<0.1){
+  else if(abs(x)<0.25 & abs(y)<0.15 & abs(z-1)<0.1){
     Serial.println('p');
     //delay(1000);
     }
