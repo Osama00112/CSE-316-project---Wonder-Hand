@@ -14,7 +14,7 @@ int UNOpin4 = 8;
 int mpuState = 0;
 int state = 0;
 char currentCommand;
-int component[2] = {0,0};
+int component[3] = {0,0,0};
 
 void initialDisplay(){
     lcd.clear();
@@ -52,8 +52,8 @@ void setup() {
 
   digitalWrite(UNOpin1, HIGH);
   digitalWrite(UNOpin2, HIGH);
-  digitalWrite(UNOpin3, HIGH);
-  digitalWrite(UNOpin4, HIGH);
+  digitalWrite(UNOpin3, LOW);
+  digitalWrite(UNOpin4, LOW);
 
 }
 
@@ -63,7 +63,13 @@ void decision(int state){
     lcd.print("Fan");
   }else if(state == 1){
     lcd.print("Light");
+  }else if (state ==2){
+    lcd.print("Alarm");
   }
+
+  digitalWrite(UNOpin3, HIGH);
+  delay(250);
+  digitalWrite(UNOpin3, LOW);
 }
 
 void checker(int state, int voltage){
@@ -73,12 +79,16 @@ void checker(int state, int voltage){
     }else{
       digitalWrite(UNOpin1, LOW);
     }
-  }else{
+  }else if(state == 1){
      if(voltage == 0){
       digitalWrite(UNOpin2, HIGH);
     }else{
       digitalWrite(UNOpin2, LOW);
     }
+  }else if(state == 2){
+     digitalWrite(UNOpin3, HIGH);
+     delay(1000);
+     digitalWrite(UNOpin3, LOW);
   }
 }
 
@@ -109,7 +119,7 @@ void loop() {
     }else if(comm == 'L'){
       if(currentCommand == 'p'){
         state++;
-      if(state > 1)
+      if(state > 2)
         state = 0;
       Serial.println(comm);
       decision(state);
@@ -119,7 +129,7 @@ void loop() {
       Serial.println(comm);
       if(currentCommand == 'p'){
         state++;
-      if(state > 1)
+      if(state > 2)
         state = 0;
       Serial.println(comm);
       decision(state);
