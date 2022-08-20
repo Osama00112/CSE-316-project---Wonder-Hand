@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 
+#define Gate 10
 LiquidCrystal_I2C lcd(0x27,16,2); //0x27 or 0x3F
 
 char comm;
@@ -26,6 +27,13 @@ void initialDisplay(){
     else
       lcd.print(" ON");
     lcd.setCursor(0,1);
+    if(state == 0){
+      lcd.print("Fan");
+    }else if(state == 1){
+      lcd.print("Light");
+    }else if (state ==2){
+      lcd.print("Alarm");
+    }
 }
 
 void setup() {
@@ -55,18 +63,13 @@ void setup() {
   digitalWrite(UNOpin3, LOW);
   digitalWrite(UNOpin4, LOW);
 
+  pinMode(Gate, OUTPUT);
+  digitalWrite(Gate, LOW);
+
 }
 
 void decision(int state){
   initialDisplay();
-  if(state == 0){
-    lcd.print("Fan");
-  }else if(state == 1){
-    lcd.print("Light");
-  }else if (state ==2){
-    lcd.print("Alarm");
-  }
-
   digitalWrite(UNOpin3, HIGH);
   delay(250);
   digitalWrite(UNOpin3, LOW);
@@ -93,6 +96,7 @@ void checker(int state, int voltage){
 }
 
 void loop() {
+
   if (Serial.available()) {   // Witing for data incoming from the other XBee module
     
     comm = Serial.read();
